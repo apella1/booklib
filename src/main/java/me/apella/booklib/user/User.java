@@ -2,6 +2,8 @@ package me.apella.booklib.user;
 
 import jakarta.persistence.*;
 import lombok.*;
+import me.apella.booklib.book.Book;
+import me.apella.booklib.history.BookTransactionHistory;
 import me.apella.booklib.role.Role;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -40,6 +42,12 @@ public class User implements UserDetails, Principal {
     private boolean enabled;
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
+    @OneToMany(mappedBy = "owner")
+    private List<Book> books;
+    @OneToMany(mappedBy = "user")
+    private List<BookTransactionHistory> bookTransactionHistories;
+
+
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdDate;

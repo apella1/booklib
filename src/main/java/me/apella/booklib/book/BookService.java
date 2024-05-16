@@ -3,6 +3,7 @@ package me.apella.booklib.book;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import me.apella.booklib.common.PageResponse;
+import me.apella.booklib.exception.OperationNotPermittedException;
 import me.apella.booklib.history.BookTransactionHistory;
 import me.apella.booklib.history.BookTransactionHistoryRepository;
 import me.apella.booklib.user.User;
@@ -106,5 +107,33 @@ public class BookService {
                 allBorrowedBooks.isFirst(),
                 allBorrowedBooks.isLast()
         );
+    }
+
+    public Integer updateShareableStatus(Integer bookId, Authentication connectedUser) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new EntityNotFoundException("No book found with the provided id: " + bookId));
+        User user = ((User) connectedUser.getPrincipal());
+        Integer bookOwnerId = book.getOwner().getId();
+        Integer userId = user.getId();
+        if (!(bookOwnerId.equals(userId))) {
+            throw new OperationNotPermittedException("You cannot update the given book!");
+        }
+        book.setShareable(!book.isShareable());
+        bookRepository.save(book);
+        return bookId;
+    }
+
+    public Integer updateArchivedStatus(Integer bookId, Authentication connectedUser) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new EntityNotFoundException("No book found with the provided id: " + bookId));
+        User user = ((User) connectedUser.getPrincipal());
+        Integer bookOwnerId = book.getOwner().getId();
+        Integer userId = user.getId();
+        if (!(bookOwnerId.equals(userId))) {
+            throw new OperationNotPermittedException("You cannot update the given book!");
+        }
+        book.setArchived(!book.isArchived());
+        bookRepository.save(book);
+        return bookId;
     }
 }

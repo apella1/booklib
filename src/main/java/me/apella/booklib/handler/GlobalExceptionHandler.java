@@ -1,6 +1,7 @@
 package me.apella.booklib.handler;
 
 import jakarta.mail.MessagingException;
+import me.apella.booklib.exception.OperationNotPermittedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -61,6 +62,18 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse> handleException(MessagingException exp) {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(
+                        ExceptionResponse
+                                .builder()
+                                .error(exp.getMessage())
+                                .build()
+                );
+    }
+
+    @ExceptionHandler(OperationNotPermittedException.class)
+    public ResponseEntity<ExceptionResponse> handleException(OperationNotPermittedException exp) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
                 .body(
                         ExceptionResponse
                                 .builder()

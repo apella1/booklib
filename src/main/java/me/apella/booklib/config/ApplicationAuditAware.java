@@ -1,4 +1,4 @@
-package me.apella.booklib.common;
+package me.apella.booklib.config;
 
 import me.apella.booklib.user.User;
 import org.springframework.data.domain.AuditorAware;

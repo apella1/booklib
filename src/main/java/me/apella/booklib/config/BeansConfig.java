@@ -1,7 +1,6 @@
 package me.apella.booklib.config;
 
 import lombok.RequiredArgsConstructor;
-import me.apella.booklib.common.ApplicationAuditAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;

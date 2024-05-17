@@ -1,5 +1,6 @@
 package me.apella.booklib.book;
 
+import me.apella.booklib.file.FileUtils;
 import me.apella.booklib.history.BookTransactionHistory;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,7 @@ public class BookMapper {
                 .archived(book.isArchived())
                 .shareable(book.isShareable())
                 .owner(book.getOwner().fullName())
+                .cover(FileUtils.readFileFromLocation(book.getCover()))
                 .build();
     }
 

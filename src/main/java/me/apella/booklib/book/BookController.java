@@ -1,5 +1,6 @@
 package me.apella.booklib.book;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +8,7 @@ import me.apella.booklib.common.PageResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("books")
@@ -86,11 +88,30 @@ public class BookController {
         return ResponseEntity.ok(bookService.borrowBook(bookId, connectedUser));
     }
 
-    @PostMapping("/return/{bookId}")
+    @PostMapping("/borrow/return/{bookId}")
     public ResponseEntity<Integer> returnBorrowedBook(
             @PathVariable Integer bookId,
             Authentication connectedUser
     ) {
         return ResponseEntity.ok(bookService.returnBorrowedBook(bookId, connectedUser));
+    }
+
+    @PostMapping("/borrow/return/approve/{bookId}")
+    public ResponseEntity<Integer> approveReturnedBook(
+            @PathVariable Integer bookId,
+            Authentication connectedUser
+    ) {
+        return ResponseEntity.ok(bookService.approveReturnedBook(bookId, connectedUser));
+    }
+
+    @PostMapping(value = "/cover/{bookId}", consumes = "multipart/formdata")
+    public ResponseEntity<?> uploadBookCoverImage(
+            @PathVariable Integer bookId,
+            @Parameter()
+            @RequestPart("file") MultipartFile file,
+            Authentication connectedUser
+    ) {
+        bookService.uploadBookCoverImage(file, connectedUser, bookId);
+        return ResponseEntity.accepted().build();
     }
 }

@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/booklib
-    username: username
-    password: password
+    url: jdbc:postgresql://localhost:5432/${DB_NAME}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -16,8 +16,8 @@ spring:
   mail:
     host: localhost
     port: 1025
-    username: jay
-    password: pass
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
     properties:
       mail:
         smtp:
@@ -32,11 +32,11 @@ spring:
 application:
   security:
     jwt:
-      secret-key: asdfg
+      secret-key: ${JWT_SECRET_KEY}
       expiration: 86400000
   mailing:
     frontend:
-      activation-url: "http://localhost:4200/activate-account"
+      activation-url: ${MAIL_ACTIVATION_URL}
   file:
     uploads:
       photos-output-path: ./uploads

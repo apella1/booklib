@@ -53,7 +53,7 @@ public class User implements UserDetails, Principal {
     private LocalDateTime createdDate;
     @LastModifiedDate
     @Column(insertable = false)
-    private LocalDateTime lastModifiedData;
+    private LocalDateTime lastModifiedDate;
 
     @Override
     public String getName() {
